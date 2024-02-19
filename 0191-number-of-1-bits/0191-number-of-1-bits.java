@@ -4,7 +4,10 @@ public class Solution {
         int a;
         int c=0;
         while (n!=0){
-            c+=n&1;
+            a=n&1;
+            if(a==1){
+                c=c+1;
+            }
             n>>>=1;
         }
         return c;
