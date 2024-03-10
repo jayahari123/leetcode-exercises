@@ -1,53 +1,41 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solution {
-
     public List<String> letterCombinations(String digits) {
-        ArrayList<String> s = new ArrayList<>();
-        ArrayList<String> res = new ArrayList<>();
-        s.add("");
-        s.add("");
-
-        if (digits.length() == 0) {
-            return res;
+        if (digits.isEmpty()) {
+            return new ArrayList<>();
         }
+        return chad("", digits);
+    }
 
-        String ss = "";
-        int cc = 0;
-        int jj = 97;
-
-        for (int i = 1; i < 6; i++) {
-            cc = 0;
-            ss = "";
-            for (; jj <= 122; jj++) {
-                if (cc > 2) {
-                    break;
+    static List<String> chad(String p, String up) {
+        if (up.isEmpty()) {
+            ArrayList<String> list = new ArrayList<>();
+            list.add(p);
+            return list;
+        }
+        int d = up.charAt(0) - '0';
+        ArrayList<String> list = new ArrayList<>();
+        if (d == 7 || d == 9) { // Handle digits 7 and 9 separately
+            for (int i = (d - 2) * 3; i < (d - 1) * 3 + 1; i++) {
+                char ch = (char) ('a' + i);
+                if (d == 9) { // Adjust for digit 9
+                    if (ch >= 'q') {
+                        ch++;
+                    }
                 }
-                cc++;
-                ss += (char) (jj);
+                list.addAll(chad(p + ch, up.substring(1)));
             }
-            s.add(i, ss);
-        }
-
-        s.add(6, "pqrs");
-        s.add(7, "tuv");
-        s.add(8, "wxyz");
-        res.add("");
-
-        for (int i = 0; i < digits.length(); i++) {
-            char d = digits.charAt(i);
-            int x = Character.getNumericValue(d);
-
-            ArrayList<String> temp = new ArrayList<>();
-            for (int j = 0; j < s.get(x - 1).length(); j++) {
-                char c = s.get(x - 1).charAt(j);
-
-                for (int k = 0; k < res.size(); k++) {
-                    temp.add(res.get(k) + c);
+        } else {
+            for (int i = (d - 2) * 3; i < (d - 1) * 3; i++) {
+                char ch = (char) ('a' + i);
+                if (d >= 8 && d <= 9) { // Skip 'q' and 'z' for digits 8 and 9
+                    ch++;
                 }
+                list.addAll(chad(p + ch, up.substring(1)));
             }
-
-            res = temp;
         }
-
-        return res;
+        return list;
     }
 }
